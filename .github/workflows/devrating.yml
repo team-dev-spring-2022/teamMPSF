@@ -1,0 +1,14 @@
+name: Update PR size suggestions at devrating.net
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+jobs:
+  devrating:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: victorx64/devrating.action@v0
