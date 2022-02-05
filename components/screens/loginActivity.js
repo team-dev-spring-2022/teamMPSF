@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 export const styles = StyleSheet.create({
-  //@todo #10 Добавить стили
+  // @todo #10 Добавить стили
 });
 
 const LoginActivity = () => {
