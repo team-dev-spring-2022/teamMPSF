@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
   // @todo #7 Добавить стили
 });
 
-
 const RegActivity = () => {
   // @todo #7 Добавить функционал
   return (
