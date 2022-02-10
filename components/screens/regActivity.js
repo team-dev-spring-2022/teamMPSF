@@ -8,22 +8,87 @@ import {
 } from 'react-native';
 
 export const styles = StyleSheet.create({
-  // @todo #7 Добавить стили
+  main: {
+    backgroundColor: '#FFFFFF',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    backgroundColor: '#FFFFFF',
+    height: '33%',
+    width: '100%',
+    alignItems: 'center',
+  },
+  titleActivity: {
+    fontSize: 24,
+    marginBottom: 30,
+    color: '#000000',
+  },
+  loginPswdTextBox: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  loginButton: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#323232',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+  },
+  loginButtonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+  },
+  signButton: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  signButtonText: {
+    color: '#9F9F9F',
+    fontSize: 17,
+  },
 });
 
-const RegActivity = () => {
+const RegActivity = ({navigation}) => {
   // @todo #7 Добавить функционал
   return (
     <View style={styles.main}>
-      <Text style={styles.titleActivity}>Sign Up</Text>
+      <Text style={styles.titleActivity}>Register</Text>
       <TextInput style={styles.loginPswdTextBox} placeholder={'Login'} />
-      <TextInput style={styles.loginPswdTextBox} placeholder={'Password'} />
-      <TextInput style={styles.loginPswdTextBox} placeholder={'Name'} />
-      <TouchableOpacity style={styles.signUpButton}>
-        <Text style={styles.signUpButtonText}>sign up</Text>
+      <TextInput style={styles.loginPswdTextBox} placeholder={'E-mail'} />
+      <TextInput
+        style={styles.loginPswdTextBox}
+        placeholder={'Password'}
+        secureTextEntry={true}
+      />
+      <TextInput
+        style={styles.loginPswdTextBox}
+        placeholder={'Confirm'}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity style={styles.loginButton}>
+        <Text style={styles.loginButtonText}>sign up</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.exitButton}>
-        <Text style={styles.exitButtonText}>exit</Text>
+      <TouchableOpacity
+        style={styles.signButton}
+        onPress={() => {
+          navigation.replace('Login');
+        }}>
+        <Text style={styles.signButtonText}>Already registered? Login</Text>
       </TouchableOpacity>
     </View>
   );
