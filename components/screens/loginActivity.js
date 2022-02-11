@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   },
 });
 
-const LoginActivity = ({navigation}) => {
+const LoginActivity = ({ navigation }) => {
   // @todo #24 Добавить функцию входа
   return (
     <View style={styles.main}>
@@ -91,6 +91,5 @@ const LoginActivity = ({navigation}) => {
     </View>
   );
 };
-
 
 export default LoginActivity;
