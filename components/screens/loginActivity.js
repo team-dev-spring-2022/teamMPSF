@@ -63,16 +63,29 @@ export const styles = StyleSheet.create({
   },
 });
 
-const LoginActivity = () => {
+const LoginActivity = ({navigation}) => {
+  // @todo #24 Добавить функцию входа
   return (
     <View style={styles.main}>
       <Text style={styles.titleActivity}>Login</Text>
       <TextInput style={styles.loginPswdTextBox} placeholder={'Login'} />
-      <TextInput style={styles.loginPswdTextBox} placeholder={'Password'} />
-      <TouchableOpacity style={styles.loginButton}>
+      <TextInput
+        style={styles.loginPswdTextBox}
+        placeholder={'Password'}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => {
+          navigation.replace('TabNavigation');
+        }}>
         <Text style={styles.loginButtonText}>login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.signButton}>
+      <TouchableOpacity
+        style={styles.signButton}
+        onPress={() => {
+          navigation.replace('SignUp');
+        }}>
         <Text style={styles.signButtonText}>sign up</Text>
       </TouchableOpacity>
     </View>
