@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 
 const MainActivity = () => {
+  // @todo #29 Добавить элементы главного экрана
   return <ScrollView />;
 };
 
