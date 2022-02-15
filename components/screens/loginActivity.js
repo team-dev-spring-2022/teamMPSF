@@ -70,6 +70,7 @@ const LoginActivity = ({navigation}) => {
   const dataToStore = async () => {
     await AsyncStorage.setItem('login', login);
     await AsyncStorage.setItem('password', password);
+    // @todo #48 Добавить передачу других данных входа
   };
   // @todo #24 Добавить функцию входа
   return (
