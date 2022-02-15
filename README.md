@@ -1,23 +1,15 @@
 
-https://www.figma.com/file/8eOFeTQtQ3wyyB5jF0gnY7/teamMPSF?node-id=0%3A1
-# delme
+Дизайн приложения находится по ссылке https://www.figma.com/file/8eOFeTQtQ3wyyB5jF0gnY7/teamMPSF?node-id=0%3A1
+# Инструкци по установке
 
-This is a template repo with initial React Native project and configured GitHub Actions.
+Скопируйте репозиторий в любую папку либо скачайте архив и разархивируйте. 
+Откройте с помощью VSCode либо любой другой удобной вам программой.
+Пропишите следующие команды в терминале:
 
 ```sh
 npm i
-
 npx react-native run-android
 
-npx eslint . --fix
 ```
-
-## Creating Issues
-
-[0pdd](https://www.0pdd.com/) is watching all public repositories in the organization.
-
-To create new Issues you should write Todo markers in the code.
-`0pdd` will automatically create new Issues from the Todos.
-
-Learn more:
-[Puzzle Driven Development (yegor256.com)](https://www.yegor256.com/2010/03/04/pdd.html)
+ # Важно
+ У вас должен быть настроен Android emulator.
