@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const styles = StyleSheet.create({
   main: {
@@ -64,19 +65,35 @@ export const styles = StyleSheet.create({
 });
 
 const LoginActivity = ({navigation}) => {
+  const [login, setLogin] = useState(null);
+  const [password, setPassword] = useState(null);
+  const dataToStore = async () => {
+    await AsyncStorage.setItem('login', login);
+    await AsyncStorage.setItem('password', password);
+  };
   // @todo #24 Добавить функцию входа
   return (
     <View style={styles.main}>
       <Text style={styles.titleActivity}>Login</Text>
-      <TextInput style={styles.loginPswdTextBox} placeholder={'Login'} />
       <TextInput
         style={styles.loginPswdTextBox}
+        onChangeText={text => {
+          setLogin(text);
+        }}
+        placeholder={'Login'}
+      />
+      <TextInput
+        style={styles.loginPswdTextBox}
+        onChangeText={text => {
+          setPassword(text);
+        }}
         placeholder={'Password'}
         secureTextEntry={true}
       />
       <TouchableOpacity
         style={styles.loginButton}
         onPress={() => {
+          dataToStore();
           navigation.replace('TabNavigation');
         }}>
         <Text style={styles.loginButtonText}>login</Text>
