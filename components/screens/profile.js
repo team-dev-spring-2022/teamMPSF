@@ -46,11 +46,11 @@ export const styles = StyleSheet.create({
 });
 
 const Profile = () => {
-  const [login, setLogin] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   const dataFromStore = async () => {
-    setLogin((await AsyncStorage.getItem('login')) || null);
+    setEmail((await AsyncStorage.getItem('email')) || null);
     setPassword((await AsyncStorage.getItem('password')) || null);
   };
   dataFromStore();
@@ -58,22 +58,26 @@ const Profile = () => {
   return (
     <View style={styles.main}>
       <View style={styles.label}>
+        <Text style={styles.labelText}>Адрес почты</Text>
+      </View>
+      <View style={styles.textBox}>
+        <TextInput
+          style={styles.textBoxText}
+          placeholder="Адрес почты"
+          value={email}
+        />
+      </View>
+      <View style={styles.label}>
         <Text style={styles.labelText}>Имя:</Text>
       </View>
       <View style={styles.textBox}>
-        <TextInput style={styles.textBoxText} placeholder="Имя" value={login} />
+        <TextInput style={styles.textBoxText} placeholder="Имя" />
       </View>
       <View style={styles.label}>
         <Text style={styles.labelText}>Фамилия:</Text>
       </View>
       <View style={styles.textBox}>
         <TextInput style={styles.textBoxText} placeholder="Фамилия" />
-      </View>
-      <View style={styles.label}>
-        <Text style={styles.labelText}>Адрес почты</Text>
-      </View>
-      <View style={styles.textBox}>
-        <TextInput style={styles.textBoxText} placeholder="Адрес почты" />
       </View>
     </View>
   );
