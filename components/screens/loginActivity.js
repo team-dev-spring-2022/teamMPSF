@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
     color: '#000000',
   },
-  loginPswdTextBox: {
+  emailPswdTextBox: {
     height: 40,
     width: '80%',
     marginBottom: 20,
@@ -65,10 +65,10 @@ export const styles = StyleSheet.create({
 });
 
 const LoginActivity = ({navigation}) => {
-  const [login, setLogin] = useState(null);
+  const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const dataToStore = async () => {
-    await AsyncStorage.setItem('login', login);
+    await AsyncStorage.setItem('email', email);
     await AsyncStorage.setItem('password', password);
     // @todo #48 Добавить передачу других данных входа
   };
@@ -77,14 +77,14 @@ const LoginActivity = ({navigation}) => {
     <View style={styles.main}>
       <Text style={styles.titleActivity}>Login</Text>
       <TextInput
-        style={styles.loginPswdTextBox}
+        style={styles.emailPswdTextBox}
         onChangeText={text => {
-          setLogin(text);
+          setEmail(text);
         }}
-        placeholder={'Login'}
+        placeholder={'Email'}
       />
       <TextInput
-        style={styles.loginPswdTextBox}
+        style={styles.emailPswdTextBox}
         onChangeText={text => {
           setPassword(text);
         }}
