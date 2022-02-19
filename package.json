@@ -17,6 +17,7 @@
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "firebase": "^9.6.7",
     "graphql": "^16.3.0",
     "react": "17.0.2",
     "react-native": "0.67.2",
