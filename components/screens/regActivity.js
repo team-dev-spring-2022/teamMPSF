@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -64,14 +64,24 @@ export const styles = StyleSheet.create({
 });
 
 const RegActivity = ({navigation}) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   // @todo #7 Добавить функционал
   return (
     <View style={styles.main}>
       <Text style={styles.titleActivity}>Register</Text>
-      <TextInput style={styles.loginPswdTextBox} placeholder={'Login'} />
-      <TextInput style={styles.loginPswdTextBox} placeholder={'E-mail'} />
       <TextInput
         style={styles.loginPswdTextBox}
+        onChangeText={text => {
+          setEmail(text);
+        }}
+        placeholder={'E-mail'}
+      />
+      <TextInput
+        style={styles.loginPswdTextBox}
+        onChangeText={text => {
+          setPassword(text);
+        }}
         placeholder={'Password'}
         secureTextEntry={true}
       />
