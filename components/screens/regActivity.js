@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import {auth} from '../../firebase';
 
 export const styles = StyleSheet.create({
   main: {
@@ -66,7 +67,15 @@ export const styles = StyleSheet.create({
 const RegActivity = ({navigation}) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  // @todo #7 Добавить функционал
+  const handleSignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Успешная регистрация: ', user.email);
+      })
+      .catch(error => alert(error.meassage));
+  };
   return (
     <View style={styles.main}>
       <Text style={styles.titleActivity}>Register</Text>
@@ -90,7 +99,7 @@ const RegActivity = ({navigation}) => {
         placeholder={'Confirm'}
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSignUp}>
         <Text style={styles.loginButtonText}>sign up</Text>
       </TouchableOpacity>
       <TouchableOpacity
