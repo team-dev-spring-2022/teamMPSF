@@ -12,8 +12,13 @@ export const styles = StyleSheet.create({
   main: {
     backgroundColor: '#FFFFFF',
     height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  title: {
+    marginTop: '5%',
+    marginLeft: '10%',
+    fontSize: 24,
+    color: '#000000',
+    marginBottom: '10%',
   },
   label: {
     height: 40,
@@ -57,6 +62,7 @@ const Profile = () => {
   // @todo #35 Доделать страницу профиля в будущем
   return (
     <View style={styles.main}>
+      <Text style={styles.title}>Profile</Text>
       <View style={styles.label}>
         <Text style={styles.labelText}>Адрес почты</Text>
       </View>
