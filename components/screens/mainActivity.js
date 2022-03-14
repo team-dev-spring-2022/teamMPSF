@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery} from '@apollo/client';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {add} from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   main: {
@@ -54,7 +56,16 @@ const styles = StyleSheet.create({
 
 const MainActivity = () => {
   const {loading, error, data} = useQuery(GET_TASKS);
+  const [checked, setCheck] = useState(new Array(999).fill(false));
 
+  const handleOnChange = position => {
+    const updatedCheckedState = checked.map((item, index) =>
+      index === position ? !item : item,
+    );
+
+    setCheck(updatedCheckedState);
+  };
+  // @todo #29 Добавить элементы главного экрана
   if (loading) {
     return (
       <View style={styles.main}>
@@ -70,14 +81,30 @@ const MainActivity = () => {
       <Text style={styles.title}>Today</Text>
       <View>
         <ScrollView>
-          {data.tasks.map(item => {
+          {data.tasks.map((item, index) => {
             return (
               <View key={item.id} style={styles.checkBox}>
-                <TouchableOpacity style={styles.box} />
-                {
-                  // @todo #68 Доделать checkbox на главном экране
-                }
                 <Text style={styles.checkBoxText}>
+                  {!checked[index] && (
+                    <MaterialCommunityIcons
+                      name="checkbox-blank-outline"
+                      color={'black'}
+                      size={20}
+                      onPress={() => {
+                        handleOnChange(index);
+                      }}
+                    />
+                  )}
+                  {!!checked[index] && (
+                    <MaterialCommunityIcons
+                      name="checkbox-marked"
+                      color={'black'}
+                      size={20}
+                      onPress={() => {
+                        handleOnChange(index);
+                      }}
+                    />
+                  )}
                   {' ' + item.title} {item.description}
                 </Text>
               </View>
