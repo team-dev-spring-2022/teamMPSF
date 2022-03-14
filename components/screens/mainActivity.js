@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery} from '@apollo/client';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {add} from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   main: {
@@ -112,6 +113,22 @@ const MainActivity = () => {
   const {loading, error, data} = useQuery(GET_TASKS);
   const [addNew, setAddNew] = useState(false);
   const [checked, setCheck] = useState(new Array(999).fill(false));
+  const [mail, setMail] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const dataFromStore = async () => {
+      return await AsyncStorage.getItem('email');
+    };
+    dataFromStore().then(value => {
+      if (isMounted) {
+        setMail(value);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleOnChange = position => {
     const updatedCheckedState = checked.map((item, index) =>
@@ -136,35 +153,37 @@ const MainActivity = () => {
       <Text style={styles.title}>Today</Text>
       <View>
         <ScrollView>
-          {data.tasks.map((item, index) => {
-            return (
-              <View key={item.id} style={styles.checkBox}>
-                <Text style={styles.checkBoxText}>
-                  {!checked[index] && (
-                    <MaterialCommunityIcons
-                      name="checkbox-blank-outline"
-                      color={'black'}
-                      size={20}
-                      onPress={() => {
-                        handleOnChange(index);
-                      }}
-                    />
-                  )}
-                  {!!checked[index] && (
-                    <MaterialCommunityIcons
-                      name="checkbox-marked"
-                      color={'black'}
-                      size={20}
-                      onPress={() => {
-                        handleOnChange(index);
-                      }}
-                    />
-                  )}
-                  {' ' + item.title} {item.description}
-                </Text>
-              </View>
-            );
-          })}
+          {data.tasks
+            .filter(item => item.mail === mail)
+            .map((item, index) => {
+              return (
+                <View key={item.id} style={styles.checkBox}>
+                  <Text style={styles.checkBoxText}>
+                    {!checked[index] && (
+                      <MaterialCommunityIcons
+                        name="checkbox-blank-outline"
+                        color={'black'}
+                        size={20}
+                        onPress={() => {
+                          handleOnChange(index);
+                        }}
+                      />
+                    )}
+                    {!!checked[index] && (
+                      <MaterialCommunityIcons
+                        name="checkbox-marked"
+                        color={'black'}
+                        size={20}
+                        onPress={() => {
+                          handleOnChange(index);
+                        }}
+                      />
+                    )}
+                    {' ' + item.title} {item.description}
+                  </Text>
+                </View>
+              );
+            })}
           <TouchableOpacity
             style={styles.addButtonBox}
             onPress={() => {
