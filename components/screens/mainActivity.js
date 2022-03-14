@@ -5,6 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Modal,
+  TextInput,
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery} from '@apollo/client';
@@ -52,10 +54,63 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignSelf: 'center',
   },
+  modalBack: {
+    backgroundColor: '#000000aa',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalFront: {
+    backgroundColor: 'white',
+    width: '80%',
+    height: '70%',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textBoxTitle: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  textBoxDes: {
+    height: '50%',
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  textBoxText: {
+    color: '#000000',
+    fontSize: 17,
+  },
+  label: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#323232',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+  },
+  labelText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+  },
 });
 
 const MainActivity = () => {
   const {loading, error, data} = useQuery(GET_TASKS);
+  const [addNew, setAddNew] = useState(false);
   const [checked, setCheck] = useState(new Array(999).fill(false));
 
   const handleOnChange = position => {
@@ -110,11 +165,38 @@ const MainActivity = () => {
               </View>
             );
           })}
-          <TouchableOpacity style={styles.addButtonBox}>
+          <TouchableOpacity
+            style={styles.addButtonBox}
+            onPress={() => {
+              setAddNew(!addNew);
+            }}>
             <Text style={styles.addButtonText}>+ Add task</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
+      <Modal visible={addNew} transparent={true}>
+        <View style={styles.modalBack}>
+          <View style={styles.modalFront}>
+            <View style={styles.textBoxTitle}>
+              <TextInput style={styles.textBoxText} placeholder="Заголовок" />
+            </View>
+            <View style={styles.textBoxDes}>
+              <TextInput
+                style={styles.textBoxText}
+                multiline={true}
+                placeholder="Описание"
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.label}
+              onPress={() => {
+                setAddNew(!addNew);
+              }}>
+              <Text style={styles.addButtonText}>+ Add task</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
