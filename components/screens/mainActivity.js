@@ -11,6 +11,8 @@ import {useQuery} from '@apollo/client';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalActivity from './modalActivity';
+import {DTASK} from '../gqls/tasks/mutations';
+import {useMutation} from '@apollo/client';
 
 const styles = StyleSheet.create({
   main: {
@@ -49,10 +51,28 @@ const styles = StyleSheet.create({
 });
 
 const MainActivity = () => {
-  const {loading, error, data} = useQuery(GET_TASKS);
+  const {loading, error, data, refetch} = useQuery(GET_TASKS);
   const [addNew, setAddNew] = useState(false);
   const [checked, setCheck] = useState(new Array(999).fill(false));
   const [mail, setMail] = useState(null);
+
+  const [del] = useMutation(DTASK, {
+    onCompleted: () => {
+      console.log('Успешно удален');
+    },
+    onError: ({message}) => {
+      console.log(message);
+    },
+  });
+
+  const deleteTask = id => {
+    del({
+      variables: {
+        id,
+      },
+      onCompleted: refetch,
+    });
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -76,7 +96,6 @@ const MainActivity = () => {
 
     setCheck(updatedCheckedState);
   };
-  // @todo #29 Добавить элементы главного экрана
   if (loading) {
     return (
       <View style={styles.main}>
@@ -119,6 +138,14 @@ const MainActivity = () => {
                       />
                     )}
                     {' ' + item.title} {item.description}
+                    <MaterialCommunityIcons
+                      name="minus-box"
+                      color={'black'}
+                      size={20}
+                      onPress={() => {
+                        deleteTask(item.id);
+                      }}
+                    />
                   </Text>
                 </View>
               );

@@ -1,11 +1,11 @@
 import {gql} from '@apollo/client';
 
 export const DTASK = gql`
-mutation deleteTask($id){
-  deleteTask (id: $id) {
+  mutation deleteTask($id: String!) {
+    deleteTask(input: {id: $id}) {
       id
+    }
   }
-}
 `;
 
 export const NTASK = gql`
