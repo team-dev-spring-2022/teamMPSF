@@ -5,14 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Modal,
-  TextInput,
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery} from '@apollo/client';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {add} from 'react-native-reanimated';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ModalActivity from './modalActivity';
 
 const styles = StyleSheet.create({
   main: {
@@ -47,65 +45,6 @@ const styles = StyleSheet.create({
     margin: 5,
     width: '80%',
     alignSelf: 'center',
-  },
-  box: {
-    width: '5%',
-    aspectRatio: 1,
-    borderColor: 'black',
-    borderWidth: 1,
-    alignSelf: 'center',
-  },
-  modalBack: {
-    backgroundColor: '#000000aa',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalFront: {
-    backgroundColor: 'white',
-    width: '80%',
-    height: '70%',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textBoxTitle: {
-    height: 40,
-    width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
-    backgroundColor: '#F2F2F2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-  },
-  textBoxDes: {
-    height: '50%',
-    width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
-    backgroundColor: '#F2F2F2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-  },
-  textBoxText: {
-    color: '#000000',
-    fontSize: 17,
-  },
-  label: {
-    height: 40,
-    width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
-    backgroundColor: '#323232',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-  },
-  labelText: {
-    color: '#FFFFFF',
-    fontSize: 17,
   },
 });
 
@@ -193,29 +132,12 @@ const MainActivity = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      <Modal visible={addNew} transparent={true}>
-        <View style={styles.modalBack}>
-          <View style={styles.modalFront}>
-            <View style={styles.textBoxTitle}>
-              <TextInput style={styles.textBoxText} placeholder="Заголовок" />
-            </View>
-            <View style={styles.textBoxDes}>
-              <TextInput
-                style={styles.textBoxText}
-                multiline={true}
-                placeholder="Описание"
-              />
-            </View>
-            <TouchableOpacity
-              style={styles.label}
-              onPress={() => {
-                setAddNew(!addNew);
-              }}>
-              <Text style={styles.addButtonText}>+ Add task</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <ModalActivity
+        open={addNew}
+        onClose={() => {
+          setAddNew(!addNew);
+        }}
+      />
     </View>
   );
 };
