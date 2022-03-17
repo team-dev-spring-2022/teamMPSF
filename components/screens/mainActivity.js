@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalActivity from './modalActivity';
 import {DTASK} from '../gqls/tasks/mutations';
 import {useMutation} from '@apollo/client';
+import TaskActivity from './taskActivity';
 
 const styles = StyleSheet.create({
   main: {
@@ -53,8 +54,11 @@ const styles = StyleSheet.create({
 const MainActivity = () => {
   const {loading, error, data, refetch} = useQuery(GET_TASKS);
   const [addNew, setAddNew] = useState(false);
+  const [openTask, setOpenTask] = useState(false);
   const [checked, setCheck] = useState(new Array(999).fill(false));
   const [mail, setMail] = useState(null);
+  const [title, setTile] = useState(null);
+  const [description, setDescription] = useState(null);
 
   const [del] = useMutation(DTASK, {
     onCompleted: () => {
@@ -116,37 +120,43 @@ const MainActivity = () => {
             .map((item, index) => {
               return (
                 <View key={item.id} style={styles.checkBox}>
-                  <Text style={styles.checkBoxText}>
-                    {!checked[index] && (
-                      <MaterialCommunityIcons
-                        name="checkbox-blank-outline"
-                        color={'black'}
-                        size={20}
-                        onPress={() => {
-                          handleOnChange(index);
-                        }}
-                      />
-                    )}
-                    {!!checked[index] && (
-                      <MaterialCommunityIcons
-                        name="checkbox-marked"
-                        color={'black'}
-                        size={20}
-                        onPress={() => {
-                          handleOnChange(index);
-                        }}
-                      />
-                    )}
-                    {' ' + item.title} {item.description}
+                  {!checked[index] && (
                     <MaterialCommunityIcons
-                      name="minus-box"
+                      name="checkbox-blank-outline"
                       color={'black'}
                       size={20}
                       onPress={() => {
-                        deleteTask(item.id);
+                        handleOnChange(index);
                       }}
                     />
+                  )}
+                  {!!checked[index] && (
+                    <MaterialCommunityIcons
+                      name="checkbox-marked"
+                      color={'black'}
+                      size={20}
+                      onPress={() => {
+                        handleOnChange(index);
+                      }}
+                    />
+                  )}
+                  <Text
+                    style={styles.checkBoxText}
+                    onPress={() => {
+                      setTile(item.title);
+                      setDescription(item.description);
+                      setOpenTask(!openTask);
+                    }}>
+                    {' ' + item.title} {item.description}
                   </Text>
+                  <MaterialCommunityIcons
+                    name="minus-box"
+                    color={'black'}
+                    size={20}
+                    onPress={() => {
+                      deleteTask(item.id);
+                    }}
+                  />
                 </View>
               );
             })}
@@ -163,6 +173,13 @@ const MainActivity = () => {
         open={addNew}
         onClose={() => {
           setAddNew(!addNew);
+        }}
+      />
+      <TaskActivity
+        props={{description, title}}
+        open={openTask}
+        onClose={() => {
+          setOpenTask(!openTask);
         }}
       />
     </View>
