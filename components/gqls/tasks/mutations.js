@@ -15,3 +15,11 @@ export const NTASK = gql`
     }
   }
 `;
+
+export const UTASK = gql`
+  mutation updateTask($id: String!, $title: String!, $description: String!) {
+    updateTask(input: {id: $id, title: $title, description: $description}) {
+      id
+    }
+  }
+`;
