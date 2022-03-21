@@ -58,6 +58,7 @@ const MainActivity = () => {
   const [mail, setMail] = useState(null);
   const [title, setTile] = useState(null);
   const [description, setDescription] = useState(null);
+  const [taskId, setId] = useState(null);
 
   const [del] = useMutation(DTASK, {
     onCompleted: () => {
@@ -144,6 +145,7 @@ const MainActivity = () => {
                     onPress={() => {
                       setTile(item.title);
                       setDescription(item.description);
+                      setId(item.id);
                       setOpenTask(!openTask);
                     }}>
                     {' ' + item.title} {item.description}
@@ -176,7 +178,7 @@ const MainActivity = () => {
         }}
       />
       <TaskActivity
-        props={{description, title}}
+        props={{taskId, description, title}}
         open={openTask}
         onClose={() => {
           setOpenTask(!openTask);
