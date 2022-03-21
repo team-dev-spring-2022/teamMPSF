@@ -1,5 +1,15 @@
-import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Modal} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import {useMutation, useQuery} from '@apollo/client';
+import {GET_TASKS} from '../gqls/tasks/queries';
+import {UTASK} from '../gqls/tasks/mutations';
 
 const styles = StyleSheet.create({
   addButtonText: {
@@ -43,6 +53,7 @@ const styles = StyleSheet.create({
   textBoxText: {
     color: '#000000',
     fontSize: 17,
+    textAlign: 'center',
   },
   label: {
     height: 40,
@@ -57,22 +68,76 @@ const styles = StyleSheet.create({
   labelText: {
     color: '#FFFFFF',
     fontSize: 17,
+    textAlign: 'center',
   },
 });
 
 const TaskActivity = ({props, open, onClose}) => {
+  const {refetch} = useQuery(GET_TASKS);
+  const [description, setDescription] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [id, setId] = useState(null);
+
+  useEffect(() => {
+    const setData = () => {
+      console.log(props.description, props.title, props.taskId);
+      setDescription(props.description);
+      setTitle(props.title);
+      setId(props.taskId);
+    };
+    setData();
+  }, [props.description, props.title, props.taskId]);
+
+  const [upd] = useMutation(UTASK, {
+    onCompleted: () => {
+      console.log('Успешно обновлен');
+    },
+    onError: ({message}) => {
+      console.log(message);
+    },
+  });
+
+  const updateTask = () => {
+    upd({
+      variables: {
+        id,
+        title,
+        description,
+      },
+      onCompleted: refetch,
+    });
+  };
+
   return (
     <Modal visible={open} transparent={true}>
       <View style={styles.modalBack}>
         <View style={styles.modalFront}>
           <View style={styles.textBoxTitle}>
-            <Text style={styles.textBoxText}>{props.title}</Text>
+            <TextInput
+              style={styles.textBoxText}
+              onChangeText={text => {
+                setTitle(text);
+              }}>
+              {props.title}
+            </TextInput>
           </View>
           <View style={styles.textBoxDes}>
-            <Text style={styles.textBoxText} multiline={true}>
+            <TextInput
+              style={styles.textBoxText}
+              onChangeText={text => {
+                setDescription(text);
+              }}
+              multiline={true}>
               {props.description}
-            </Text>
+            </TextInput>
           </View>
+          <TouchableOpacity
+            style={styles.label}
+            onPress={() => {
+              updateTask();
+            }}>
+            <Text style={styles.labelText}>Save</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.label} onPress={onClose}>
             <Text style={styles.labelText}>Close</Text>
           </TouchableOpacity>
