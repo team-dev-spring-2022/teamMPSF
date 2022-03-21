@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
-import {useQuery} from '@apollo/client';
+import {useQuery, useMutation} from '@apollo/client';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalActivity from './modalActivity';
 import {DTASK} from '../gqls/tasks/mutations';
-import {useMutation} from '@apollo/client';
 import TaskActivity from './taskActivity';
 
 const styles = StyleSheet.create({
@@ -170,6 +169,7 @@ const MainActivity = () => {
         </ScrollView>
       </View>
       <ModalActivity
+        props={{mail}}
         open={addNew}
         onClose={() => {
           setAddNew(!addNew);
