@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  Alert,
 } from 'react-native';
 import {NTASK} from '../gqls/tasks/mutations';
 import {GET_TASKS} from '../gqls/tasks/queries';
@@ -103,6 +104,16 @@ const ModalActivity = ({open, onClose, props}) => {
       onCompleted: refetch,
     });
   };
+
+  const createHandle = () =>
+    Alert.alert('', 'Create new task?', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => createTask()},
+    ]);
+
   return (
     <Modal visible={open} transparent={true}>
       <View style={styles.modalBack}>
@@ -129,7 +140,7 @@ const ModalActivity = ({open, onClose, props}) => {
           <TouchableOpacity
             style={styles.label}
             onPress={() => {
-              createTask();
+              createHandle();
             }}>
             <Text style={styles.labelText}>+ Add task</Text>
           </TouchableOpacity>
