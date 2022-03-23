@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery, useMutation} from '@apollo/client';
@@ -77,6 +78,15 @@ const MainActivity = () => {
       onCompleted: refetch,
     });
   };
+
+  const deleteHandle = id =>
+    Alert.alert('', 'Delete this task?', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => deleteTask(id)},
+    ]);
 
   useEffect(() => {
     let isMounted = true;
@@ -155,7 +165,7 @@ const MainActivity = () => {
                     color={'black'}
                     size={20}
                     onPress={() => {
-                      deleteTask(item.id);
+                      deleteHandle(item.id);
                     }}
                   />
                 </View>
