@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Modal,
+  Alert,
 } from 'react-native';
 import {useMutation, useQuery} from '@apollo/client';
 import {GET_TASKS} from '../gqls/tasks/queries';
@@ -80,7 +81,6 @@ const TaskActivity = ({props, open, onClose}) => {
 
   useEffect(() => {
     const setData = () => {
-      console.log(props.description, props.title, props.taskId);
       setDescription(props.description);
       setTitle(props.title);
       setId(props.taskId);
@@ -108,6 +108,15 @@ const TaskActivity = ({props, open, onClose}) => {
     });
   };
 
+  const saveHandle = () =>
+    Alert.alert('', 'Save changes?', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => updateTask()},
+    ]);
+
   return (
     <Modal visible={open} transparent={true}>
       <View style={styles.modalBack}>
@@ -134,7 +143,7 @@ const TaskActivity = ({props, open, onClose}) => {
           <TouchableOpacity
             style={styles.label}
             onPress={() => {
-              updateTask();
+              saveHandle();
             }}>
             <Text style={styles.labelText}>Save</Text>
           </TouchableOpacity>
