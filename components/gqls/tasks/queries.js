@@ -7,6 +7,7 @@ export const GET_TASKS = gql`
       title
       description
       mail
+      date
     }
   }
 `;
