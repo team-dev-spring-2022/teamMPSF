@@ -97,12 +97,13 @@ const TaskActivity = ({props, open, onClose}) => {
     },
   });
 
-  const updateTask = () => {
+  const updateTask = date => {
     upd({
       variables: {
         id,
         title,
         description,
+        date,
       },
       onCompleted: refetch,
     });
@@ -114,7 +115,7 @@ const TaskActivity = ({props, open, onClose}) => {
         text: 'No',
         style: 'cancel',
       },
-      {text: 'Yes', onPress: () => updateTask()},
+      {text: 'Yes', onPress: () => updateTask(new Date().getTime())},
     ]);
 
   return (

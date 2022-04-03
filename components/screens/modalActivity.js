@@ -94,12 +94,13 @@ const ModalActivity = ({open, onClose, props}) => {
       console.log(message);
     },
   });
-  const createTask = () => {
+  const createTask = date => {
     create({
       variables: {
         title,
         description,
         mail,
+        date,
       },
       onCompleted: refetch,
     });
@@ -111,7 +112,7 @@ const ModalActivity = ({open, onClose, props}) => {
         text: 'No',
         style: 'cancel',
       },
-      {text: 'Yes', onPress: () => createTask()},
+      {text: 'Yes', onPress: () => createTask(new Date().getTime())},
     ]);
 
   return (
