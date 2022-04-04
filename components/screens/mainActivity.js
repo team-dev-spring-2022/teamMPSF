@@ -158,7 +158,11 @@ const MainActivity = () => {
                       setId(item.id);
                       setOpenTask(!openTask);
                     }}>
-                    {' ' + item.title} {item.description}
+                    {' ' + item.title} {item.description + ' '}{' '}
+                    {item.date.split('T')[0] + ' '}
+                    {item.date.split('T')[1].split(':')[0] +
+                      ':' +
+                      item.date.split('T')[1].split(':')[1]}
                   </Text>
                   <MaterialCommunityIcons
                     name="minus-box"
