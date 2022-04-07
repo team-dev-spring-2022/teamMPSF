@@ -5,6 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -63,28 +64,30 @@ const Profile = () => {
   return (
     <View style={styles.main}>
       <Text style={styles.title}>Profile</Text>
-      <View style={styles.label}>
-        <Text style={styles.labelText}>Адрес почты</Text>
-      </View>
-      <View style={styles.textBox}>
-        <TextInput
-          style={styles.textBoxText}
-          placeholder="Адрес почты"
-          value={email}
-        />
-      </View>
-      <View style={styles.label}>
-        <Text style={styles.labelText}>Имя:</Text>
-      </View>
-      <View style={styles.textBox}>
-        <TextInput style={styles.textBoxText} placeholder="Имя" />
-      </View>
-      <View style={styles.label}>
-        <Text style={styles.labelText}>Фамилия:</Text>
-      </View>
-      <View style={styles.textBox}>
-        <TextInput style={styles.textBoxText} placeholder="Фамилия" />
-      </View>
+      <ScrollView>
+        <View style={styles.label}>
+          <Text style={styles.labelText}>Адрес почты</Text>
+        </View>
+        <View style={styles.textBox}>
+          <TextInput
+            style={styles.textBoxText}
+            placeholder="Адрес почты"
+            value={email}
+          />
+        </View>
+        <View style={styles.label}>
+          <Text style={styles.labelText}>Имя:</Text>
+        </View>
+        <View style={styles.textBox}>
+          <TextInput style={styles.textBoxText} placeholder="Имя" />
+        </View>
+        <View style={styles.label}>
+          <Text style={styles.labelText}>Фамилия:</Text>
+        </View>
+        <View style={styles.textBox}>
+          <TextInput style={styles.textBoxText} placeholder="Фамилия" />
+        </View>
+      </ScrollView>
     </View>
   );
 };
