@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from 'react-native';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery, useMutation} from '@apollo/client';
@@ -49,7 +50,30 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
   },
+  textBox: {
+    height: 40,
+    width: '80%',
+    marginBottom: 20,
+    marginHorizontal: 40,
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  textBoxText: {
+    color: '#000000',
+    fontSize: 17,
+  },
 });
+
+const isToday = someDate => {
+  const today = new Date();
+  return (
+    someDate.getDate() === today.getDate() &&
+    someDate.getMonth() === today.getMonth() &&
+    someDate.getFullYear() === today.getFullYear()
+  );
+};
 
 const MainActivity = () => {
   const {loading, error, data, refetch} = useQuery(GET_TASKS);
@@ -60,6 +84,8 @@ const MainActivity = () => {
   const [title, setTile] = useState(null);
   const [description, setDescription] = useState(null);
   const [taskId, setId] = useState(null);
+  const [date, setDate] = useState(null);
+  const [stext, setText] = useState('');
 
   const [del] = useMutation(DTASK, {
     onCompleted: () => {
@@ -123,67 +149,79 @@ const MainActivity = () => {
   return (
     <View style={styles.main}>
       <Text style={styles.title}>Today</Text>
-      <View>
-        <ScrollView>
-          {data.tasks
-            .filter(item => item.mail === mail)
-            .map((item, index) => {
-              return (
-                <View key={item.id} style={styles.checkBox}>
-                  {!checked[index] && (
-                    <MaterialCommunityIcons
-                      name="checkbox-blank-outline"
-                      color={'black'}
-                      size={20}
-                      onPress={() => {
-                        handleOnChange(index);
-                      }}
-                    />
-                  )}
-                  {!!checked[index] && (
-                    <MaterialCommunityIcons
-                      name="checkbox-marked"
-                      color={'black'}
-                      size={20}
-                      onPress={() => {
-                        handleOnChange(index);
-                      }}
-                    />
-                  )}
-                  <Text
-                    style={styles.checkBoxText}
-                    onPress={() => {
-                      setTile(item.title);
-                      setDescription(item.description);
-                      setId(item.id);
-                      setOpenTask(!openTask);
-                    }}>
-                    {' ' + item.title} {item.description + ' '}{' '}
-                    {item.date.split('T')[0] + ' '}
-                    {item.date.split('T')[1].split(':')[0] +
-                      ':' +
-                      item.date.split('T')[1].split(':')[1]}
-                  </Text>
+      <View style={styles.textBox}>
+        <TextInput
+          style={styles.textBoxText}
+          placeholder="Поиск"
+          onChangeText={text => {
+            setText(text);
+          }}
+        />
+      </View>
+      <ScrollView>
+        {data.tasks
+          .filter(item => item.mail === mail)
+          .filter(
+            item =>
+              item.title.includes(stext) || item.description.includes(stext),
+          )
+          .filter(
+            item =>
+              isToday(new Date(item.date)) && new Date(item.date) > new Date(),
+          )
+          .map((item, index) => {
+            return (
+              <View key={item.id} style={styles.checkBox}>
+                {!checked[index] && (
                   <MaterialCommunityIcons
-                    name="minus-box"
+                    name="checkbox-blank-outline"
                     color={'black'}
                     size={20}
                     onPress={() => {
-                      deleteHandle(item.id);
+                      handleOnChange(index);
                     }}
                   />
-                </View>
-              );
-            })}
-          <TouchableOpacity
-            style={styles.addButtonBox}
-            onPress={() => {
-              setAddNew(!addNew);
-            }}>
-            <Text style={styles.addButtonText}>+ Add task</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
+                )}
+                {!!checked[index] && (
+                  <MaterialCommunityIcons
+                    name="checkbox-marked"
+                    color={'black'}
+                    size={20}
+                    onPress={() => {
+                      handleOnChange(index);
+                    }}
+                  />
+                )}
+                <Text
+                  style={styles.checkBoxText}
+                  onPress={() => {
+                    setTile(item.title);
+                    setDescription(item.description);
+                    setId(item.id);
+                    setDate(item.date);
+                    setOpenTask(!openTask);
+                  }}>
+                  {' ' + item.title + ' ' + item.description}
+                </Text>
+                <MaterialCommunityIcons
+                  name="minus-box"
+                  color={'black'}
+                  size={20}
+                  onPress={() => {
+                    deleteHandle(item.id);
+                  }}
+                />
+              </View>
+            );
+          })}
+        <TouchableOpacity
+          style={styles.addButtonBox}
+          onPress={() => {
+            setAddNew(!addNew);
+          }}>
+          <Text style={styles.addButtonText}>+ Add task</Text>
+        </TouchableOpacity>
+      </ScrollView>
       <ModalActivity
         props={{mail}}
         open={addNew}
@@ -192,7 +230,7 @@ const MainActivity = () => {
         }}
       />
       <TaskActivity
-        props={{taskId, description, title}}
+        props={{taskId, description, title, date}}
         open={openTask}
         onClose={() => {
           setOpenTask(!openTask);
