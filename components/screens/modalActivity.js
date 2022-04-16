@@ -7,10 +7,13 @@ import {
   Modal,
   TextInput,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {NTASK} from '../gqls/tasks/mutations';
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useMutation, useQuery} from '@apollo/client';
+import DatePicker from 'react-native-date-picker';
 
 const styles = StyleSheet.create({
   addButtonText: {
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
   modalFront: {
     backgroundColor: 'white',
     width: '80%',
-    height: '70%',
+    height: '80%',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -34,18 +37,18 @@ const styles = StyleSheet.create({
   textBoxTitle: {
     height: 40,
     width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
+    marginTop: 20,
+    alignSelf: 'center',
     backgroundColor: '#F2F2F2',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
   },
   textBoxDes: {
-    height: '50%',
+    height: 280,
     width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
+    marginTop: 20,
+    alignSelf: 'center',
     backgroundColor: '#F2F2F2',
     justifyContent: 'center',
     alignItems: 'center',
@@ -59,8 +62,8 @@ const styles = StyleSheet.create({
   label: {
     height: 40,
     width: '80%',
-    marginBottom: 20,
-    marginHorizontal: 40,
+    marginTop: 20,
+    alignSelf: 'center',
     backgroundColor: '#323232',
     justifyContent: 'center',
     alignItems: 'center',
@@ -78,6 +81,8 @@ const ModalActivity = ({open, onClose, props}) => {
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [mail, setMail] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [openDate, setOpen] = useState(false);
 
   useEffect(() => {
     const setData = () => {
@@ -94,7 +99,7 @@ const ModalActivity = ({open, onClose, props}) => {
       console.log(message);
     },
   });
-  const createTask = date => {
+  const createTask = () => {
     create({
       variables: {
         title,
@@ -116,44 +121,75 @@ const ModalActivity = ({open, onClose, props}) => {
     ]);
 
   return (
-    <Modal visible={open} transparent={true}>
+    <Modal visible={open} transparent={true} animationType="fade">
       <View style={styles.modalBack}>
         <View style={styles.modalFront}>
-          <View style={styles.textBoxTitle}>
-            <TextInput
-              style={styles.textBoxText}
-              onChangeText={text => {
-                setTitle(text);
-              }}
-              placeholder="Заголовок"
-            />
-          </View>
-          <View style={styles.textBoxDes}>
-            <TextInput
-              style={styles.textBoxText}
-              multiline={true}
-              onChangeText={text => {
-                setDescription(text);
-              }}
-              placeholder="Описание"
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.label}
-            onPress={() => {
-              createHandle();
-            }}>
-            <Text style={styles.labelText}>+ Add task</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.label}
-            onPress={() => {
-              onClose();
-            }}>
-            <Text style={styles.labelText}>Close</Text>
-          </TouchableOpacity>
+          <ScrollView style={{width: '100%'}}>
+            <View style={styles.textBoxTitle}>
+              <TextInput
+                style={styles.textBoxText}
+                onChangeText={text => {
+                  setTitle(text);
+                }}
+                placeholder="Заголовок"
+              />
+            </View>
+            <View style={styles.textBoxDes}>
+              <TextInput
+                style={styles.textBoxText}
+                multiline={true}
+                onChangeText={text => {
+                  setDescription(text);
+                }}
+                placeholder="Описание"
+              />
+            </View>
+            <View style={styles.textBoxTitle}>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpen(true);
+                }}>
+                <Text style={styles.textBoxText}>
+                  {date.toISOString().split('T')[0] + ' '}
+                  {date.toISOString().split('T')[1].split(':')[0] +
+                    ':' +
+                    date.toISOString().split('T')[1].split(':')[1]}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.label}>
+              <TouchableOpacity
+                onPress={() => {
+                  createHandle();
+                }}>
+                <Text style={styles.labelText}>+ Add task</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.label}>
+              <TouchableOpacity
+                onPress={() => {
+                  onClose();
+                }}>
+                <Text style={styles.labelText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
+      <DatePicker
+        modal
+        open={openDate}
+        date={date}
+        locale="ru"
+        is24hourSource="locale"
+        onConfirm={date => {
+          setOpen(false);
+          setDate(date);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
     </Modal>
   );
 };
