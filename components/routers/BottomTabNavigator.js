@@ -4,6 +4,7 @@ import MainActivity from '../screens/mainActivity';
 import Profile from '../screens/profile';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PastActivity from '../screens/pastActivity';
+import FutureActivity from '../screens/futureActivity';
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
@@ -26,6 +27,21 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
+        name="FutureActivity"
+        component={FutureActivity}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Future',
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons
+              name="alpha-f-circle"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="PastActivity"
         component={PastActivity}
         options={{
@@ -33,7 +49,7 @@ const BottomTabNavigator = () => {
           tabBarLabel: 'Past',
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
-              name="home-circle"
+              name="alpha-p-circle"
               color={color}
               size={size}
             />
