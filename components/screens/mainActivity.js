@@ -165,10 +165,8 @@ const MainActivity = () => {
             item =>
               item.title.includes(stext) || item.description.includes(stext),
           )
-          .filter(
-            item =>
-              isToday(new Date(item.date)) && new Date(item.date) > new Date(),
-          )
+          .filter(item => isToday(new Date(item.date)))
+          .sort((a, b) => new Date(a.date) > new Date(b.date))
           .map((item, index) => {
             return (
               <View key={item.id} style={styles.checkBox}>
