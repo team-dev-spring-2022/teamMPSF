@@ -64,6 +64,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const isToday = someDate => {
+  const today = new Date();
+  return (
+    someDate.getDate() === today.getDate() &&
+    someDate.getMonth() === today.getMonth() &&
+    someDate.getFullYear() === today.getFullYear()
+  );
+};
+
 const PastActivity = () => {
   const {loading, error, data, refetch} = useQuery(GET_TASKS);
   const [openTask, setOpenTask] = useState(false);
@@ -127,7 +136,7 @@ const PastActivity = () => {
   if (loading) {
     return (
       <View style={styles.main}>
-        <Text style={styles.title}>Today</Text>
+        <Text style={styles.title}>Past</Text>
         <ScrollView>
           <Text style={styles.buttonText}>Loading</Text>
         </ScrollView>
@@ -136,7 +145,7 @@ const PastActivity = () => {
   }
   return (
     <View style={styles.main}>
-      <Text style={styles.title}>Today</Text>
+      <Text style={styles.title}>Past</Text>
 
       <View style={styles.textBox}>
         <TextInput
@@ -154,7 +163,11 @@ const PastActivity = () => {
             item =>
               item.title.includes(stext) || item.description.includes(stext),
           )
-          .filter(item => new Date(item.date) < new Date())
+          .filter(
+            item =>
+              !isToday(new Date(item.date)) && new Date(item.date) < new Date(),
+          )
+          .sort((a, b) => new Date(a.date) > new Date(b.date))
           .map((item, index) => {
             return (
               <View key={item.id} style={styles.checkBox}>
