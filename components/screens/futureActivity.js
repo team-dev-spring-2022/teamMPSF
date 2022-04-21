@@ -136,7 +136,7 @@ const FutureActivity = () => {
   if (loading) {
     return (
       <View style={styles.main}>
-        <Text style={styles.title}>Today</Text>
+        <Text style={styles.title}>Future</Text>
         <ScrollView>
           <Text style={styles.buttonText}>Loading</Text>
         </ScrollView>
@@ -145,7 +145,7 @@ const FutureActivity = () => {
   }
   return (
     <View style={styles.main}>
-      <Text style={styles.title}>Today</Text>
+      <Text style={styles.title}>Future</Text>
       <View style={styles.textBox}>
         <TextInput
           style={styles.textBoxText}
@@ -166,6 +166,7 @@ const FutureActivity = () => {
             item =>
               !isToday(new Date(item.date)) && new Date(item.date) > new Date(),
           )
+          .sort((a, b) => new Date(a.date) > new Date(b.date))
           .map((item, index) => {
             return (
               <View key={item.id} style={styles.checkBox}>
