@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {auth} from '../../firebase';
 
 export const styles = StyleSheet.create({
@@ -68,17 +67,14 @@ export const styles = StyleSheet.create({
 const LoginActivity = ({navigation}) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const dataToStore = async () => {
-    await AsyncStorage.setItem('email', email);
-    await AsyncStorage.setItem('password', password);
-    // @todo #48 Добавить передачу других данных входа
-  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         navigation.replace('TabNavigation');
       }
     });
+    return unsubscribe;
   });
 
   const handleLogin = () => {
@@ -88,7 +84,7 @@ const LoginActivity = ({navigation}) => {
         const user = userCredentials.user;
         console.log('Успешный вход: ', user.email);
       })
-      .catch(error => alert(error.meassage));
+      .catch(error => alert(error.message));
   };
   return (
     <View style={styles.main}>
@@ -108,12 +104,7 @@ const LoginActivity = ({navigation}) => {
         placeholder={'Password'}
         secureTextEntry={true}
       />
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => {
-          dataToStore();
-          handleLogin();
-        }}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>login</Text>
       </TouchableOpacity>
       <TouchableOpacity

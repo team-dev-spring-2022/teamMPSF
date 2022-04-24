@@ -10,9 +10,9 @@ import {
 import {GET_TASKS} from '../gqls/tasks/queries';
 import {useQuery, useMutation} from '@apollo/client';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DTASK} from '../gqls/tasks/mutations';
 import TaskActivity from './taskActivity';
+import {auth} from '../../firebase';
 
 const styles = StyleSheet.create({
   main: {
@@ -112,18 +112,7 @@ const PastActivity = () => {
     ]);
 
   useEffect(() => {
-    let isMounted = true;
-    const dataFromStore = async () => {
-      return await AsyncStorage.getItem('email');
-    };
-    dataFromStore().then(value => {
-      if (isMounted) {
-        setMail(value);
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
+    setMail(auth.currentUser?.email);
   }, []);
 
   const handleOnChange = position => {

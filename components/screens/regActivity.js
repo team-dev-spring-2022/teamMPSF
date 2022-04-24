@@ -73,8 +73,9 @@ const RegActivity = ({navigation}) => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Успешная регистрация: ', user.email);
+        navigation.replace('Login');
       })
-      .catch(error => alert(error.meassage));
+      .catch(error => alert(error.message));
   };
   return (
     <View style={styles.main}>

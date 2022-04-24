@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {auth} from '../../firebase';
 
 export const styles = StyleSheet.create({
   main: {
@@ -51,15 +51,16 @@ export const styles = StyleSheet.create({
   },
 });
 
-const Profile = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
-  const dataFromStore = async () => {
-    setEmail((await AsyncStorage.getItem('email')) || null);
-    setPassword((await AsyncStorage.getItem('password')) || null);
+const Profile = ({navigation}) => {
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.replace('Login');
+      })
+      .catch(error => alert(error.message));
   };
-  dataFromStore();
+
   // @todo #35 Доделать страницу профиля в будущем
   return (
     <View style={styles.main}>
@@ -72,7 +73,7 @@ const Profile = () => {
           <TextInput
             style={styles.textBoxText}
             placeholder="Адрес почты"
-            value={email}
+            value={auth.currentUser?.email}
           />
         </View>
         <View style={styles.label}>
@@ -87,6 +88,11 @@ const Profile = () => {
         <View style={styles.textBox}>
           <TextInput style={styles.textBoxText} placeholder="Фамилия" />
         </View>
+        <TouchableOpacity onPress={handleSignOut}>
+          <View style={styles.label}>
+            <Text style={styles.labelText}>Выйти</Text>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
