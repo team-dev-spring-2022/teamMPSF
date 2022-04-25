@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {auth} from '../../firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const styles = StyleSheet.create({
   main: {
@@ -73,7 +74,10 @@ const RegActivity = ({navigation}) => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Успешная регистрация: ', user.email);
-        navigation.replace('Login');
+        AsyncStorage.setItem('logged', 'yes');
+        AsyncStorage.setItem('email', email);
+        AsyncStorage.setItem('password', password);
+        navigation.replace('TabNavigation');
       })
       .catch(error => alert(error.message));
   };
