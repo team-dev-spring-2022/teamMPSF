@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {auth} from '../../firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const styles = StyleSheet.create({
   main: {
@@ -56,6 +57,9 @@ const Profile = ({navigation}) => {
     auth
       .signOut()
       .then(() => {
+        AsyncStorage.setItem('logged', 'no');
+        AsyncStorage.setItem('email', '');
+        AsyncStorage.setItem('password', '');
         navigation.replace('Login');
       })
       .catch(error => alert(error.message));

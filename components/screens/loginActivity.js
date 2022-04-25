@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {auth} from '../../firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const styles = StyleSheet.create({
   main: {
@@ -75,13 +76,16 @@ const LoginActivity = ({navigation}) => {
       }
     });
     return unsubscribe;
-  });
+  }, [navigation]);
 
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
+        AsyncStorage.setItem('logged', 'yes');
+        AsyncStorage.setItem('email', email);
+        AsyncStorage.setItem('password', password);
         console.log('Успешный вход: ', user.email);
       })
       .catch(error => alert(error.message));
