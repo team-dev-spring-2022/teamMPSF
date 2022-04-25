@@ -8,7 +8,6 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  KeyboardAvoidingView,
 } from 'react-native';
 import {NTASK} from '../gqls/tasks/mutations';
 import {GET_TASKS} from '../gqls/tasks/queries';
@@ -91,9 +90,10 @@ const ModalActivity = ({open, onClose, props}) => {
     setData();
   }, [props.mail]);
 
-  const [create] = useMutation(NTASK, {
+  const [create, {loading}] = useMutation(NTASK, {
     onCompleted: () => {
       console.log('Успешно создан');
+      onClose();
     },
     onError: ({message}) => {
       console.log(message);
@@ -119,6 +119,18 @@ const ModalActivity = ({open, onClose, props}) => {
       },
       {text: 'Yes', onPress: () => createTask(new Date().getTime())},
     ]);
+
+  if (loading) {
+    return (
+      <Modal visible={open} transparent={true} animationType="fade">
+        <View style={styles.modalBack}>
+          <View style={styles.modalFront}>
+            <Text style={styles.textBoxText}>Creating</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 
   return (
     <Modal visible={open} transparent={true} animationType="fade">
