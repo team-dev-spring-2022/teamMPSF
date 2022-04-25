@@ -93,9 +93,10 @@ const TaskActivity = ({props, open, onClose}) => {
     setData();
   }, [props.description, props.title, props.taskId, props.date]);
 
-  const [upd] = useMutation(UTASK, {
+  const [upd, {loading}] = useMutation(UTASK, {
     onCompleted: () => {
       console.log('Успешно обновлен');
+      onClose();
     },
     onError: ({message}) => {
       console.log(message);
@@ -122,6 +123,18 @@ const TaskActivity = ({props, open, onClose}) => {
       },
       {text: 'Yes', onPress: () => updateTask(new Date().getTime())},
     ]);
+
+  if (loading) {
+    return (
+      <Modal visible={open} transparent={true} animationType="fade">
+        <View style={styles.modalBack}>
+          <View style={styles.modalFront}>
+            <Text style={styles.textBoxText}>Updating</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 
   return (
     <Modal visible={open} transparent={true} animationType="fade">
