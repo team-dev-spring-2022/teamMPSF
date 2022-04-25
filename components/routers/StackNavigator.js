@@ -25,7 +25,7 @@ const StackNavigator = () => {
             console.log('Успешный вход: ', user.email);
           })
           .catch(error => alert(error.message));
-      } else if (logged === 'no') {
+      } else {
         setInitRoute('Login');
       }
     };
