@@ -1,10 +1,10 @@
-name: Update PR size suggestions at devrating.net
+name: Update PR size and stability labels
 on:
   pull_request:
+    branches: [ master, main ]
+    types: [ opened, synchronize, closed, reopened ]
 jobs:
-  devrating:
+  pr-labels:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/hello-world-docker-action@master
-      with:
-        who-to-greet: 'Mona the Octocat'
+    - uses: devrating/pr-size-advisor@a8eca5b4f59c16b7575303fba7d8758b09a280a4
